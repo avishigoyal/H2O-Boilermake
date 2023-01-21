@@ -7,25 +7,9 @@ public class FileUtils {
 
     public static void createAccount(User user) {
         File f = new File(userFile);
-        ArrayList<User> users = new ArrayList<>();
-        try (FileInputStream fis = new FileInputStream(userFile);
-             ObjectInputStream in = new ObjectInputStream(fis)) {
-            User u = (User) in.readObject();
-            while (u != null) {
-                users.add(u);
-                u = (User) in.readObject();
-            }
-        } catch (EOFException e) {
-            f.delete();
-            try (FileOutputStream fis = new FileOutputStream(userFile);
-                 ObjectOutputStream out = new ObjectOutputStream(fis)) {
-                for (int i = 0; i < users.size(); i++) {
-                    out.writeObject(users.get(i));
-                }
-                out.writeObject(user);
-            } catch (Exception x) {
-                x.printStackTrace();
-            }
+        try (BufferedReader bfr = new BufferedReader(new FileReader(userFile));
+             PrintWriter pw = new PrintWriter(new FileOutputStream(userFile, true))) {
+            pw.println(user.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -36,17 +20,23 @@ public class FileUtils {
         if (!f.exists()) {
             return false;
         }
-        try (FileInputStream fis = new FileInputStream(userFile);
-             ObjectInputStream in = new ObjectInputStream(fis)) {
-            User u = (User) in.readObject();
-            while (u != null) {
-                if (username.equals(u.getUsername())) {
+        try (BufferedReader bfr = new BufferedReader(new FileReader(userFile));
+             PrintWriter pw = new PrintWriter(new FileOutputStream(userFile, true))) {
+            ArrayList<String> usernames = new ArrayList<>();
+            while (true) {
+                String line = bfr.readLine();
+                if (line == null) {
+                    break;
+                }
+                String[] elements = line.split(",");
+                usernames.add(elements[0]);
+            }
+
+            for (int i = 0; i < usernames.size(); i++) {
+                if (usernames.get(i).equals(username)) {
                     return true;
                 }
-                u = (User) in.readObject();
             }
-        } catch (EOFException e) {
-            // end of file
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -58,49 +48,25 @@ public class FileUtils {
         if (!f.exists()) {
             return null;
         }
-        try (FileInputStream fis = new FileInputStream(userFile); ObjectInputStream in = new ObjectInputStream(fis)) {
-            User u = (User) in.readObject();
-            while (u != null) {
-                if (u.equals(user)) {
-                    return u;
+        try (BufferedReader bfr = new BufferedReader(new FileReader(userFile));
+             PrintWriter pw = new PrintWriter(new FileOutputStream(userFile, true))) {
+            ArrayList<User> users = new ArrayList<>();
+            while (true) {
+                String line = bfr.readLine();
+                if (line == null) {
+                    break;
                 }
-                u = (User) in.readObject();
+                String[] elements = line.split(",");
+                if (elements[0].equals(user.getUsername()) &&
+                        elements[1].equals(user.getPassword())) {
+                    return new User(elements[0], elements[1],
+                            elements[2],elements[3], elements[4]);
+                }
             }
-        } catch (EOFException e) {
-            // end of file
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public static void writeUser(User newUser) {
-        File f = new File(userFile);
-        ArrayList<User> users = new ArrayList<User>();
-        try (FileInputStream fis = new FileInputStream(userFile);
-             ObjectInputStream in = new ObjectInputStream(fis)) {
-            User u = (User) in.readObject();
-            while (u != null) {
-                if (u.equals(newUser)) {
-                    users.add(newUser);
-                }
-                else {
-                    users.add(u);
-                }
-                u = (User) in.readObject();
-            }
-        } catch (EOFException e) {
-            f.delete();
-            try (FileOutputStream fis = new FileOutputStream(userFile);
-                 ObjectOutputStream out = new ObjectOutputStream(fis)) {
-                for (int x = 0; x < users.size(); x++) {
-                    out.writeObject(users.get(x));
-                }
-            } catch (Exception m) {
-                m.printStackTrace();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

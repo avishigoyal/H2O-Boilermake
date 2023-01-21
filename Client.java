@@ -63,8 +63,8 @@ public class Client {
                         writer.println();
                         writer.flush();
                     }
-                    System.out.println("How long do you brush your teeth?");
-                    System.out.println("1. 0-5 minutes \n2. 5-10 minutes \n3. 10+ minutes");
+                    System.out.println("How often do you brush your teeth in a day?");
+                    System.out.println("1. 1 time \n2. 2 times \n3. 3+ times");
                     int teeth = scan.nextInt();
                     scan.nextLine();
                     writer.write(teeth);

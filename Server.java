@@ -10,6 +10,7 @@ public class Server {
     public static void main(String[] args) {
         try {
             ServerSocket serverSocket = new ServerSocket(4242);
+            System.out.println("Waiting for the client to connect...");
             Socket socket = serverSocket.accept();
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
@@ -57,7 +58,6 @@ public class Server {
                     // returns to select the following
                 }
             } while (!option.equals("1") && !option.equals("2") || message.contains("Invalid"));
-
         } catch (Exception e) {
             e.printStackTrace();
         }

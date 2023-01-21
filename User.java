@@ -15,6 +15,11 @@ public class User implements Serializable {
         this.county = county;
     }
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -55,4 +60,7 @@ public class User implements Serializable {
         this.county = county;
     }
 
+    public String toString() {
+        return username + "," + password + "," + email + "," + state + "," + county;
+    }
 }

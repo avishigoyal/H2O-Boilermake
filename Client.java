@@ -25,6 +25,7 @@ public class Client {
             switch(choice) {
                 case 1:
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

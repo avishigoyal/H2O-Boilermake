@@ -1,29 +1,6 @@
 import java.io.File;
 
 public class Form {
-    private String email;
-    private String location;
-
-    public Form(String email, String location) {
-        this.email = email;
-        this.location = location;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
     //bath - direct in Server
     //shower
     public static String bathShowerCalc(String bs, String showerDur) {
@@ -307,49 +284,48 @@ public class Form {
     }
 
     //comparison - 138 gallons per household per day
-    public static String compareDroughtWithPlant(User user, String bs, String showerDur, String teeth, String toilet,
-                                                 String washHands, String clothes, String cook, String dd,
-                                                 String dishwash, String handwash, String yn, String ws,
-                                                 String watercan, String sprinkle) {
-        String comparison = "";
+    public static String compareDroughtWithPlant(String total, User user) {
+        String comparison;
+        String temp;
+        String temp2;
+        String temp3;
         String classification = FileUtils.CSVDroughtStats(user);
-        String total = totalConsumption(bs, showerDur, teeth, toilet, washHands, clothes, cook, dd, dishwash, handwash,
-                yn, ws, watercan, sprinkle);
-        comparison += "Your total water consumption per week is " + total + " gallons.\n";
         double houseAvg = 138.0 * 7;
+        temp = "Your current total water consumption per week is " + total + " gallons. ";
         if (classification.contains("D4")) {
-            comparison += classification + "You are in an area of Exceptional Drought. Please look for ways to reduce " +
-                    "your water consumption.\n";
+            temp2 = classification + ". You are in an area of Exceptional Drought. Please look for ways to reduce " +
+                    "your water consumption. ";
         } else if (classification.contains("D3")) {
-            comparison += classification + "You are in an area of Extreme Drought. Please look for ways to reduce " +
-                    "your water consumption.\n";
+            temp2 = classification + ". You are in an area of Extreme Drought. Please look for ways to reduce " +
+                    "your water consumption. ";
         } else if (classification.contains("D2")) {
-            comparison += classification + "You are in an area of Severe Drought. Please look for ways to reduce " +
-                    "your water consumption.\n";
+            temp2 = classification + ". You are in an area of Severe Drought. Please look for ways to reduce " +
+                    "your water consumption. ";
         } else if (classification.contains("D1")) {
-            comparison += classification + "You are in an area of Moderate Drought. Begin considering ways to reduce " +
-                    "your water consumption and save water.\n";
+            temp2 = classification + ". You are in an area of Moderate Drought. Begin considering ways to reduce " +
+                    "your water consumption and save water. ";
         } else if (classification.contains("D0")) {
-            comparison += classification + "You are in an area that is Abnormally Dry. Begin considering ways to reduce " +
-                    "your water consumption and save water.\n";
-        } else if (classification.contains("None")) {
-            comparison += classification + "You are in an area of low/no drought risk. Start looking for resources to " +
+            temp2 = classification + ". You are in an area that is Abnormally Dry. Begin considering ways to reduce " +
+                    "your water consumption and save water. ";
+        } else {
+            temp2 = classification + ". You are in an area of low/no drought risk. Start looking for resources to " +
                     "gain more awareness of the water crisis and how you can educate yourself and others on how to save " +
-                    "water.\n";
+                    "water. ";
         }
         double mins = Double.parseDouble(total.substring(0, total.indexOf("-")));
-        double maxs = Double.parseDouble(total.substring(total.indexOf("-")));
+        double maxs = Double.parseDouble(total.substring(total.indexOf("-") + 1));
         if (maxs < houseAvg) {
-            comparison += "Your household water consumption is excellent! " +
-                    "Your maximum usage is below the national average per household per week.\n";
+            temp3 = "Your household water consumption is excellent! " +
+                    "Your maximum usage is below the national average per household per week.";
         } else if (maxs >= houseAvg && mins < houseAvg) {
-            comparison += "Your household water consumption is average. Your maximum usage is greater than/equal to " +
+            temp3 = "Your household water consumption is average. Your maximum usage is greater than/equal to " +
                     "the national average per household per week and your minimum usage is below the national " +
-                    "average.\n";
-        } else if (mins > houseAvg) {
-            comparison += "Your household water consumption needs improvement. Your minimum usage is greater than the "
-                    + "national average per household per week.\n";
+                    "average.";
+        } else {
+            temp3 = "Your household water consumption needs improvement. Your minimum usage is greater than the "
+                    + "national average per household per week.";
         }
+        comparison = temp2 + temp + temp3;
         return comparison;
     }
 }

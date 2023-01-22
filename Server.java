@@ -116,8 +116,11 @@ public class Server {
                     String total = Form.totalConsumption(bs, showerDur, teeth, toilet, washHands, clothes, cook, dd, dishwash, handwash,
                             yn, ws, watercan, sprinkle);
                     String comparison = Form.compareDroughtWithPlant(total, user);
-                    writer.write(comparison);
-                    writer.println();
+                    String[] array = comparison.split("\n");
+                    for (int i = 0; i < array.length; i++) {
+                        writer.write(array[i]);
+                        writer.println();
+                    }
                     writer.flush();
                 } else if (option.equals("2")) {
                     // quit

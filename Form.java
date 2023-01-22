@@ -275,10 +275,10 @@ public class Form {
         double waterPlantMin = Double.parseDouble(wc.substring(0, wc.indexOf("-")));
         double waterPlantMax = Double.parseDouble(wc.substring(wc.indexOf("-") + 1));
 
-        double mins = showerMin + teethVal + toiletMin + handWashMin + clothesMin + cookMin + dishwashMin +
-                waterPlantMin;
-        double maxs = showerMax + teethVal + toiletMax + handWashMax + clothesMax + cookMax + dishwashMax +
-                waterPlantMax;
+        double mins = Math.round(showerMin + teethVal + toiletMin + handWashMin + clothesMin + cookMin + dishwashMin +
+                waterPlantMin);
+        double maxs = Math.round(showerMax + teethVal + toiletMax + handWashMax + clothesMax + cookMax + dishwashMax +
+                waterPlantMax);
         String range = String.format(mins + "-" + maxs);
         return range;
     }
@@ -289,26 +289,26 @@ public class Form {
         String temp;
         String temp2;
         String temp3;
-        String classification = FileUtils.CSVDroughtStats(user);
+        String classification = FileUtils.CSVDroughtStats(user) + ". ";
         double houseAvg = 138.0 * 7;
         temp = "Your current total water consumption per week is " + total + " gallons. ";
         if (classification.contains("D4")) {
-            temp2 = classification + ". You are in an area of Exceptional Drought. Please look for ways to reduce " +
+            temp2 = "You are in an area of Exceptional Drought. Please look for ways to reduce " +
                     "your water consumption. ";
         } else if (classification.contains("D3")) {
-            temp2 = classification + ". You are in an area of Extreme Drought. Please look for ways to reduce " +
+            temp2 = "You are in an area of Extreme Drought. Please look for ways to reduce " +
                     "your water consumption. ";
         } else if (classification.contains("D2")) {
-            temp2 = classification + ". You are in an area of Severe Drought. Please look for ways to reduce " +
+            temp2 = "You are in an area of Severe Drought. Please look for ways to reduce " +
                     "your water consumption. ";
         } else if (classification.contains("D1")) {
-            temp2 = classification + ". You are in an area of Moderate Drought. Begin considering ways to reduce " +
+            temp2 = "You are in an area of Moderate Drought. Begin considering ways to reduce " +
                     "your water consumption and save water. ";
         } else if (classification.contains("D0")) {
-            temp2 = classification + ". You are in an area that is Abnormally Dry. Begin considering ways to reduce " +
+            temp2 = "You are in an area that is Abnormally Dry. Begin considering ways to reduce " +
                     "your water consumption and save water. ";
         } else {
-            temp2 = classification + ". You are in an area of low/no drought risk. Start looking for resources to " +
+            temp2 = "You are in an area of low/no drought risk. Start looking for resources to " +
                     "gain more awareness of the water crisis and how you can educate yourself and others on how to save " +
                     "water. ";
         }
@@ -325,7 +325,7 @@ public class Form {
             temp3 = "Your household water consumption needs improvement. Your minimum usage is greater than the "
                     + "national average per household per week.";
         }
-        comparison = temp2 + temp + temp3;
+        comparison = classification + "\n" + temp2 + "\n" + temp + "\n" + temp3;
         return comparison;
     }
 }

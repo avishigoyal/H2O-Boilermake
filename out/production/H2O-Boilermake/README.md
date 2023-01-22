@@ -19,10 +19,13 @@ information of the user's county. According to the county's drought status, the 
 much water user's should be using weekly to help the growing water crisis.
 
 ### Total Water Usage per Week
-We used the 
+We used the data collected to the multiple choice quiz in order to gain ranges on each of the household tasks. Then we 
+simply multiplied them based on research and added up all values to gain a total consumption value for a week per
+average household (around 2 people).
 
 ## Research Resources
 "United States Droughts by County" dataset on Kaggle:
 https://www.kaggle.com/datasets/us-drought-monitor/united-states-droughts-by-county?resource=download&select=us-droughts.csv
 
-"How We Use Water" on 
+"How We Use Water" on United States Environmental Protection Energy: 
+https://www.epa.gov/watersense/how-we-use-water#:~:text=Water%20in%20Daily%20Life,-In%20the%20US&text=The%20average%20American%20family%20uses,in%20more%20water%2Dintensive%20landscapes

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class FileUtils {
 
     private static final String userFile = "users.txt";
+    private static final String droughtFile = "us-droughts.csv";
 
     public static void createAccount(User user) {
         File f = new File(userFile);
@@ -68,5 +69,31 @@ public class FileUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static double CSVDroughtStats(User user) {
+        File f = new File(droughtFile);
+        try (BufferedReader bfr = new BufferedReader(new FileReader(droughtFile))) {
+            Double average = 0.0;
+            int size = 0;
+            while (true) {
+                String line = bfr.readLine();
+                if (line == null) {
+                    break;
+                }
+                String[] elements = line.split(",");
+                if (elements[0].contains("2016") &&
+                        elements[3].toUpperCase().contains(user.getState().toUpperCase()) &&
+                        elements[2].toLowerCase().contains(user.getCounty().toLowerCase())) {
+                    size++;
+                    average = average + (100 - Double.parseDouble(elements[4]));
+                }
+            }
+            return average/size;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 300.0;
     }
 }

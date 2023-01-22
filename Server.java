@@ -34,7 +34,8 @@ public class Server {
                 if (option.equals("1")) {
                     String username = reader.readLine();
                     String password = reader.readLine();
-                    user = new User(username, password);
+                    Integer hash = password.hashCode();
+                    user = new User(username, hash.toString());
                     if (FileUtils.verifyLogin(user) == null) {
                         message = "Invalid";
                         writer.write("Invalid username or password. Try again.");

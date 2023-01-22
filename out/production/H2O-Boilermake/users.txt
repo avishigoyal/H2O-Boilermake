@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-avishi,2015596388,a@aol.com,5,S F O
-=======
-bhavyaven,832904237,lolz@gmail.com,CA,Santa Clara
->>>>>>> 161613da1bf4aba549f29bf82f1d075b1756ddf0
+avishi,2015596385,a@aol.com,CA,alameda

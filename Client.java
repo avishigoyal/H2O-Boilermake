@@ -213,7 +213,8 @@ public class Client {
                             "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
                             "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"};
                     try {
-                        state = GUIUtil.choiceGUI("Choose your state abbreviated. (ex: Alabama = AL)", abbrev);
+                        String s = GUIUtil.choiceGUI("Choose your state abbreviated. (ex: Alabama = AL)", abbrev);
+                        state = abbrev[Integer.parseInt(s) - 1];
                     } catch (Exception e) {
                     }
                     writer.write(state);
@@ -244,6 +245,7 @@ public class Client {
                     }
                 }
             } while (!option.equals("1") && !option.equals("2") || message.contains("Invalid"));
+
 
             do {
                 System.out.println("What would you like to do?");

@@ -105,6 +105,7 @@ public class Server {
                             sprinkle = reader.readLine();
                         }
                     }
+                    // comparisons
                 } else if (option.equals("2")) {
                     //tracker
                 }

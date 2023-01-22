@@ -201,7 +201,7 @@ public class Client {
                             writer.println();
                             writer.flush();
                             do {
-                                System.out.println("How long do you shower?");
+                                System.out.println("How long do you shower per day?");
                                 System.out.println("1. 0-10 minutes \n2. 11-20 minutes \n3. 21+ minutes");
                                 showerDur = scan.nextLine();
                                 if (!showerDur.equals("1") && !showerDur.equals("2") && !showerDur.equals("3")) {
@@ -227,7 +227,7 @@ public class Client {
                         }
                     } while (!teeth.equals("1") && !teeth.equals("2") && !teeth.equals("3"));
                     do {
-                        System.out.println("How many times do you use the toilet?");
+                        System.out.println("How many times do you use the toilet in a day?");
                         System.out.println("1. 0-2 times \n2. 3-6 times \n3. 7+ times");
                         toilet = scan.nextLine();
                         if (!toilet.equals("1") && !toilet.equals("2") && !toilet.equals("3")) {
@@ -239,7 +239,7 @@ public class Client {
                         }
                     } while (!toilet.equals("1") && !toilet.equals("2") && !toilet.equals("3"));
                     do {
-                        System.out.println("How often do you wash your hands?");
+                        System.out.println("How often do you wash your hands in a day?");
                         System.out.println("1. 0-4 times \n 5-10 times \n3. 11+ times");
                         washHands = scan.nextLine();
                         if (!washHands.equals("1") && !washHands.equals("2") && !washHands.equals("3")) {
@@ -251,7 +251,7 @@ public class Client {
                         }
                     } while (!washHands.equals("1") && !washHands.equals("2") && !washHands.equals("3"));
                     do {
-                        System.out.println("How often do you use the washing machine per month?");
+                        System.out.println("How often do you use the washing machine per week?");
                         System.out.println("1. 0-1 times \n2. 2-4 times \n3. 5+ times");
                         clothes = scan.nextLine();
                         if (!clothes.equals("1") && !clothes.equals("2") && !clothes.equals("3")) {
@@ -293,7 +293,7 @@ public class Client {
                             writer.println();
                             writer.flush();
                             do {
-                                System.out.println("How often do you use the dishwasher?");
+                                System.out.println("How often do you use the dishwasher in a week?");
                                 System.out.println("1. 0-4 times \n2. 5-10 times \n3. 11+ times");
                                 dishwash = scan.nextLine();
                                 if (!dishwash.equals("1") && !dishwash.equals("2") && !dishwash.equals("3")) {
@@ -312,7 +312,7 @@ public class Client {
                             writer.println();
                             writer.flush();
                             do {
-                                System.out.println("How often do you wash dishes by hand?");
+                                System.out.println("How often do you wash dishes by hand in a week?");
                                 System.out.println("1. 0-4 times \n2. 5-10 times \n3. 11+ times");
                                 handwash = scan.nextLine();
                                 if (!handwash.equals("1") && !handwash.equals("2") && !handwash.equals("3")) {
@@ -356,7 +356,8 @@ public class Client {
                                     writer.println();
                                     writer.flush();
                                     do {
-                                        System.out.println("How often do you water your plants by hand/watering can?");
+                                        System.out.println("How often do you water your plants by hand/watering can " +
+                                                "in a week?");
                                         System.out.println("1. 0-2 times \n2. 3-5 times \n3. 6+ times");
                                         watercan = scan.nextLine();
                                         if (!watercan.equals("1") && !watercan.equals("2") && !watercan.equals("3")) {
@@ -375,7 +376,8 @@ public class Client {
                                     writer.println();
                                     writer.flush();
                                     do {
-                                        System.out.println("How often do you water your plants by sprinklers?");
+                                        System.out.println("How often do you water your plants by sprinklers in a " +
+                                                "week?");
                                         System.out.println("1. 0-2 times \n2. 3-5 times \n3. 6+ times");
                                         sprinkle = scan.nextLine();
                                         if (!sprinkle.equals("1") && !sprinkle.equals("2") && !sprinkle.equals("3")) {
@@ -390,6 +392,7 @@ public class Client {
                             } while (!ws.equals("1") && !ws.equals("2"));
                         }
                     } while (!yn.equals("1") && !yn.equals("2"));
+                    // print info about water usage
                 } else if (option.equals("2")) {
                     // tracker
                 }

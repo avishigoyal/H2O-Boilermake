@@ -1,3 +1,5 @@
+import java.io.File;
+
 public class Form {
     private String email;
     private String location;
@@ -33,19 +35,19 @@ public class Form {
             case 1:
                 // 0-10 mins
                 min = 0;
-                max = 2.5 * 10;
+                max = 2.5 * 10 * 7;
                 range = String.format(min + "-" + max);
                 break;
             case 2:
                 // 11-20 mins
-                min = 2.5 * 11;
-                max = 2.5 * 20;
+                min = 2.5 * 11 * 7;
+                max = 2.5 * 20 * 7;
                 range = String.format(min + "-" + max);
                 break;
             case 3:
                 // 21+ mins
-                min = 2.5 * 21;
-                max = 2.5 * 21;
+                min = 2.5 * 21 * 7;
+                max = 2.5 * 21 * 7;
                 range = String.format(min + "-" + max);
                 break;
         }
@@ -59,17 +61,17 @@ public class Form {
         switch(teeth) {
             case 1:
                 // 1 time
-                gal = 0.25 * 1;
+                gal = 0.25 * 1 * 7;
                 range = String.format(gal + "-gallons");
                 break;
             case 2:
                 // 2 times
-                gal = 0.25 * 2;
+                gal = 0.25 * 2 * 7;
                 range = String.format(gal + "-gallons");
                 break;
             case 3:
                 // 3+ times
-                gal = 0.25 * 3;
+                gal = 0.25 * 3 * 7;
                 range = String.format(gal + "-gallons");
                 break;
         }
@@ -85,19 +87,19 @@ public class Form {
             case 1:
                 // 0-2 times
                 min = 0;
-                max = 1.6 * 2;
+                max = 1.6 * 2 * 7;
                 range = String.format(min + "-" + max);
                 break;
             case 2:
                 // 3-6 times
-                min = 1.6 * 3;
-                max = 1.6 * 6;
+                min = 1.6 * 3 * 7;
+                max = 1.6 * 6 * 7;
                 range = String.format(min + "-" + max);
                 break;
             case 3:
                 // 7+ times
-                min = 1.6 * 7;
-                max = 1.6 * 7;
+                min = 1.6 * 7 * 7;
+                max = 1.6 * 7 * 7;
                 range = String.format(min + "-" + max);
                 break;
         }
@@ -113,19 +115,19 @@ public class Form {
             case 1:
                 // 0-4 times
                 min = 0;
-                max = 0.75 * 4;
+                max = 0.75 * 4 * 7;
                 range = String.format(min + "-" + max);
                 break;
             case 2:
                 // 5-10 times
-                min = 0.75 * 5;
-                max = 0.75 * 10;
+                min = 0.75 * 5 * 7;
+                max = 0.75 * 10 * 7;
                 range = String.format(min + "-" + max);
                 break;
             case 3:
                 // 11+ times
-                min = 0.75 * 11;
-                max = 0.75 * 11;
+                min = 0.75 * 11 * 7;
+                max = 0.75 * 11 * 7;
                 range = String.format(min + "-" + max);
                 break;
         }
@@ -377,11 +379,90 @@ public class Form {
         return range;
     }
 
-    //comparison
-    public void compare() {
-
+    //comparison - 138 gallons per household per day
+    public String compareDroughtWOPlant(User user, int showerDur, int teeth, int toilet, int washHands, int clothes, int cook,
+                                        int dishwash, int handwash) {
+        String comparison = "";
+        String classification = ""; // csv method
+        String total = totalConsumptionWOPlant(showerDur, teeth, toilet, washHands, clothes, cook, dishwash, handwash);
+        comparison += "Your total water consumption per week is " + total + " gallons.\n";
+        double houseAvg = 138.0 * 7;
+        if (classification.contains("D4")) {
+            comparison += classification + "You are in an area of Exceptional Drought. Please look for ways to reduce " +
+                    "your water consumption.\n";
+        } else if (classification.contains("D3")) {
+            comparison += classification + "You are in an area of Extreme Drought. Please look for ways to reduce " +
+                    "your water consumption.\n";
+        } else if (classification.contains("D2")) {
+            comparison += classification + "You are in an area of Severe Drought. Please look for ways to reduce " +
+                    "your water consumption.\n";
+        } else if (classification.contains("D1")) {
+            comparison += classification + "You are in an area of Moderate Drought. Begin considering ways to reduce " +
+                    "your water consumption and save water.\n";
+        } else if (classification.contains("D0")) {
+            comparison += classification + "You are in an area that is Abnormally Dry. Begin considering ways to reduce " +
+                    "your water consumption and save water.\n";
+        } else if (classification.contains("None")) {
+            comparison += classification + "You are in an area of low/no drought risk. Start looking for resources to " +
+                    "gain more awareness of the water crisis and how you can educate yourself and others on how to save " +
+                    "water.\n";
+        }
+        double mins = Double.parseDouble(total.substring(0, total.indexOf("-")));
+        double maxs = Double.parseDouble(total.substring(total.indexOf("-")));
+        if (maxs < houseAvg) {
+            comparison += "Your household water consumption is excellent! " +
+                    "Your maximum usage is below the national average per household per week.\n";
+        } else if (maxs >= houseAvg && mins < houseAvg) {
+            comparison += "Your household water consumption is average. Your maximum usage is greater than/equal to " +
+                    "the national average per household per week and your minimum usage is below the national " +
+                    "average.\n";
+        } else if (mins > houseAvg) {
+            comparison += "Your household water consumption needs improvement. Your minimum usage is greater than the "
+                    + "national average per household per week.\n";
+        }
+        return comparison;
     }
-    //user.getstate
-    // range
-    // average american family
+    public String compareDroughtWithPlant(User user, int showerDur, int teeth, int toilet, int washHands, int clothes, int cook,
+                                          int dishwash, int handwash, int watercan, int sprinkle) {
+        String comparison = "";
+        String classification = ""; // csv method
+        String total = totalConsumptionWithPlant(showerDur, teeth, toilet, washHands, clothes, cook, dishwash, handwash,
+                watercan, sprinkle);
+        comparison += "Your total water consumption per week is " + total + " gallons.\n";
+        double houseAvg = 138.0 * 7;
+        if (classification.contains("D4")) {
+            comparison += classification + "You are in an area of Exceptional Drought. Please look for ways to reduce " +
+                    "your water consumption.\n";
+        } else if (classification.contains("D3")) {
+            comparison += classification + "You are in an area of Extreme Drought. Please look for ways to reduce " +
+                    "your water consumption.\n";
+        } else if (classification.contains("D2")) {
+            comparison += classification + "You are in an area of Severe Drought. Please look for ways to reduce " +
+                    "your water consumption.\n";
+        } else if (classification.contains("D1")) {
+            comparison += classification + "You are in an area of Moderate Drought. Begin considering ways to reduce " +
+                    "your water consumption and save water.\n";
+        } else if (classification.contains("D0")) {
+            comparison += classification + "You are in an area that is Abnormally Dry. Begin considering ways to reduce " +
+                    "your water consumption and save water.\n";
+        } else if (classification.contains("None")) {
+            comparison += classification + "You are in an area of low/no drought risk. Start looking for resources to " +
+                    "gain more awareness of the water crisis and how you can educate yourself and others on how to save " +
+                    "water.\n";
+        }
+        double mins = Double.parseDouble(total.substring(0, total.indexOf("-")));
+        double maxs = Double.parseDouble(total.substring(total.indexOf("-")));
+        if (maxs < houseAvg) {
+            comparison += "Your household water consumption is excellent! " +
+                    "Your maximum usage is below the national average per household per week.\n";
+        } else if (maxs >= houseAvg && mins < houseAvg) {
+            comparison += "Your household water consumption is average. Your maximum usage is greater than/equal to " +
+                    "the national average per household per week and your minimum usage is below the national " +
+                    "average.\n";
+        } else if (mins > houseAvg) {
+            comparison += "Your household water consumption needs improvement. Your minimum usage is greater than the "
+                    + "national average per household per week.\n";
+        }
+        return comparison;
+    }
 }

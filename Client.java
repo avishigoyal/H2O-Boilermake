@@ -39,31 +39,43 @@ public class Client {
             Socket socket = new Socket("localhost", 4242);
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            Scanner scanner = new Scanner(System.in);
 
             User user = null;
             String option = "";
             String message = "";
 
-            System.out.println("Welcome to WaterLog!");
+            try {
+                GUIUtil.outGUI("Welcome to WaterLog!");
+            } catch (Exception e) {
+            }
             do {
-                System.out.println("Select one of the following:");
-                System.out.println("1. Login\n2. Create Account");
-                option = scanner.nextLine();
+                try {
+                    String[] options = new String[2];
+                    options[0] = "1. Login";
+                    options[1] = "2. Create Account";
+                    option = GUIUtil.choiceGUI("Select one of the following:", options);
+                } catch (Exception e) {
+                }
 
                 writer.write(option);
                 writer.println();
                 writer.flush();
 
                 if (option.equals("1")) {
-                    String username;
-                    String password;
+                    String username = "";
+                    String password = "";
 
                     do {
-                        System.out.println("Enter your username.");
-                        username = scanner.nextLine();
+                        try {
+                            username = GUIUtil.stringGUI("Enter your username.");
+                        } catch (Exception e) {
+                        }
+
                         if (username == null || username.contains(" ")) {
-                            System.out.println("Invalid username.");
+                            try {
+                                GUIUtil.errorGUI("Invalid username.");
+                            } catch (Exception e) {
+                            }
                         } else {
                             writer.write(username);
                             writer.println();
@@ -72,10 +84,15 @@ public class Client {
                     } while (username == null || username.contains(" "));
 
                     do {
-                        System.out.println("Enter your password.");
-                        password = scanner.nextLine();
+                        try {
+                            password = GUIUtil.stringGUI("Enter your password.");
+                        } catch (Exception e) {
+                        }
                         if (password == null || password.contains(" ")) {
-                            System.out.println("Invalid password.");
+                            try {
+                                GUIUtil.errorGUI("Invalid password.");
+                            } catch (Exception e) {
+                            }
                         } else {
                             writer.write(password);
                             writer.println();
@@ -83,27 +100,38 @@ public class Client {
                         }
                     } while (password == null || password.contains(" "));
                     message = reader.readLine();
-                    System.out.println(message);
+                    try {
+                        GUIUtil.outGUI(message);
+                    } catch (Exception e) {
+                    }
 
                 } else if (option.equals("2")) {
-                    String username;
-                    String password;
-                    String email;
-                    String state;
-                    String county;
+                    String username = "";
+                    String password = "";
+                    String email = "";
+                    String state = "";
+                    String county = "";
                     boolean usernameExists;
                     boolean passwordChecker;
                     String emailSubstring = "";
                     String passwordCheck = "";
 
                     do {
-                        System.out.println("Enter your username.");
-                        username = scanner.nextLine();
+                        try {
+                            username = GUIUtil.stringGUI("Enter your username.");
+                        } catch (Exception e) {
+                        }
                         usernameExists = FileUtils.checkUsername(username);
                         if (username == null || username.contains(" ")) {
-                            System.out.println("Invalid username.");
-                        } else if (usernameExists){
-                            System.out.println("Username taken.");
+                            try {
+                                GUIUtil.errorGUI("Invalid username.");
+                            } catch (Exception e) {
+                            }
+                        } else if (usernameExists) {
+                            try {
+                                GUIUtil.errorGUI("Username taken.");
+                            } catch (Exception e) {
+                            }
                         } else {
                             writer.write(username);
                             writer.println();
@@ -112,8 +140,10 @@ public class Client {
                     } while (username == null || username.contains(" ") || usernameExists);
 
                     do {
-                        System.out.println("Enter your password. (At least 8 characters long and 1 number)");
-                        password = scanner.nextLine();
+                        try {
+                            password = GUIUtil.stringGUI("Enter your password. (At least 8 characters long and 1 number)");
+                        } catch (Exception e) {
+                        }
                         passwordChecker = false;
                         for (int i = 0; i < password.length(); i++) {
                             if (Character.isDigit(password.charAt(i))) {
@@ -125,17 +155,25 @@ public class Client {
                                 password.contains(" ") ||
                                 !passwordChecker ||
                                 (password.length() < 8)) {
-                            System.out.println("Invalid password.");
+                            try {
+                                GUIUtil.errorGUI("Invalid password.");
+                            } catch (Exception e) {
+                            }
                         } else {
-                            System.out.println("Re-enter your password.");
-                            passwordCheck = scanner.nextLine();
+                            try {
+                                passwordCheck = GUIUtil.stringGUI("Re-enter your password.");
+                            } catch (Exception e) {
+                            }
                             if (passwordCheck.equals(password)) {
                                 Integer hash = password.hashCode();
                                 writer.write(hash.toString());
                                 writer.println();
                                 writer.flush();
                             } else {
-                                System.out.println("Passwords do not match.");
+                                try {
+                                    GUIUtil.errorGUI("Passwords do not match.");
+                                } catch (Exception e) {
+                                }
                             }
                         }
                     } while (password == null ||
@@ -143,17 +181,22 @@ public class Client {
                             !passwordChecker ||
                             (password.length() < 8) ||
                             !passwordCheck.equals(password));
-
                     do {
-                        System.out.println("Enter your email.");
-                        email = scanner.nextLine();
+                        try {
+                            email = GUIUtil.stringGUI("Enter your email.");
+                        } catch (Exception e) {
+                        }
                         if (email.contains("@")) {
                             emailSubstring = email.substring(email.indexOf("@"));
                         }
                         if (email == null ||
                                 email.contains(" ") ||
-                                !email.contains("@") || !emailSubstring.contains(".")) {
-                            System.out.println("Invalid email.");
+                                !email.contains("@") ||
+                                !emailSubstring.contains(".")) {
+                            try {
+                                GUIUtil.errorGUI("Invalid email.");
+                            } catch (Exception e) {
+                            }
                         } else {
                             writer.write(email);
                             writer.println();
@@ -164,23 +207,29 @@ public class Client {
                             !email.contains("@") ||
                             !emailSubstring.contains("."));
 
-                    do {
-                        System.out.println("Enter your state abbreviated. (ex: Alabama = AL)");
-                        state = scanner.nextLine().toUpperCase();
-                        if (state == null || state.length() != 2) {
-                            System.out.println("Invalid state.");
-                        } else {
-                            writer.write(state);
-                            writer.println();
-                            writer.flush();
-                        }
-                    } while (state == null || state.length() != 2);
+                    String[] abbrev = {"AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
+                            "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+                            "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+                            "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+                            "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"};
+                    try {
+                        state = GUIUtil.choiceGUI("Choose your state abbreviated. (ex: Alabama = AL)", abbrev);
+                    } catch (Exception e) {
+                    }
+                    writer.write(state);
+                    writer.println();
+                    writer.flush();
 
                     do {
-                        System.out.println("Enter the name of the county you live in. (ex: San Francisco)");
-                        county = scanner.nextLine();
+                        try {
+                            county = GUIUtil.stringGUI("Enter the name of the county you live in. (ex: San Francisco)");
+                        } catch (Exception e) {
+                        }
                         if (county == null) {
-                            System.out.println("Invalid county.");
+                            try {
+                                GUIUtil.errorGUI("Invalid county.");
+                            } catch (Exception e) {
+                            }
                         } else {
                             writer.write(county);
                             writer.println();
@@ -189,13 +238,16 @@ public class Client {
                     } while (county == null);
 
                 } else {
-                    System.out.println("Error. Please try again.");
+                    try {
+                        GUIUtil.errorGUI("Error. Please try again.");
+                    } catch (Exception e) {
+                    }
                 }
             } while (!option.equals("1") && !option.equals("2") || message.contains("Invalid"));
-         
+
             do {
                 System.out.println("What would you like to do?");
-                System.out.println("1. Water Consumption Quiz \n2. Water Consumption Tracker");
+                System.out.println("1. Water Consumption Quiz \n2. Quit");
                 option = scan.nextLine();
                 writer.write(option);
                 writer.println();
@@ -219,7 +271,7 @@ public class Client {
                             writer.write(String.valueOf(shower));
                             writer.println();
                             writer.flush();
-                        } else if (bs.equals("2")){
+                        } else if (bs.equals("2")) {
                             bath = false;
                             shower = true;
                             writer.write(String.valueOf(bath));
@@ -409,7 +461,7 @@ public class Client {
                                             writer.println();
                                             writer.flush();
                                         }
-                                    }while (!sprinkle.equals("1") && !sprinkle.equals("2") && !sprinkle.equals("3"));
+                                    } while (!sprinkle.equals("1") && !sprinkle.equals("2") && !sprinkle.equals("3"));
                                 }
                             } while (!ws.equals("1") && !ws.equals("2"));
                         }
@@ -418,7 +470,7 @@ public class Client {
                     String comparison = reader.readLine();
                     System.out.println(comparison);
                 } else if (option.equals("2")) {
-                    // tracker
+                    GUIUtil.closingMessage();
                 }
             } while (!option.equals("1") && !option.equals("2"));
         } catch (Exception e) {

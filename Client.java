@@ -1,9 +1,13 @@
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.io.*;
 import java.net.*;
+import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -31,13 +35,8 @@ public class Client {
         String watercan = "";
         String sprinkle = "";
 
-        System.out.println("Enter a host name: ");
-        String host = scan.nextLine();
-        System.out.println("Enter a port number: ");
-        int portNumber = scan.nextInt();
-        scan.nextLine();
         try {
-            Socket socket = new Socket(host, portNumber);
+            Socket socket = new Socket("localhost", 4242);
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             Scanner scanner = new Scanner(System.in);
@@ -93,6 +92,9 @@ public class Client {
                     String state;
                     String county;
                     boolean usernameExists;
+                    boolean passwordChecker;
+                    String emailSubstring = "";
+                    String passwordCheck = "";
 
                     do {
                         System.out.println("Enter your username.");
@@ -100,33 +102,57 @@ public class Client {
                         usernameExists = FileUtils.checkUsername(username);
                         if (username == null || username.contains(" ")) {
                             System.out.println("Invalid username.");
-                        } else if (usernameExists == true){
+                        } else if (usernameExists){
                             System.out.println("Username taken.");
                         } else {
                             writer.write(username);
                             writer.println();
                             writer.flush();
                         }
-                    } while (username == null || username.contains(" ") || usernameExists == true);
+                    } while (username == null || username.contains(" ") || usernameExists);
 
                     do {
-                        System.out.println("Enter your password.");
+                        System.out.println("Enter your password. (At least 8 characters long and 1 number)");
                         password = scanner.nextLine();
-                        if (password == null || password.contains(" ")) {
+                        passwordChecker = false;
+                        for (int i = 0; i < password.length(); i++) {
+                            if (Character.isDigit(password.charAt(i))) {
+                                passwordChecker = true;
+                                break;
+                            }
+                        }
+                        if (password == null ||
+                                password.contains(" ") ||
+                                !passwordChecker ||
+                                (password.length() < 8)) {
                             System.out.println("Invalid password.");
                         } else {
-                            writer.write(password);
-                            writer.println();
-                            writer.flush();
+                            System.out.println("Re-enter your password.");
+                            passwordCheck = scanner.nextLine();
+                            if (passwordCheck.equals(password)) {
+                                Integer hash = password.hashCode();
+                                writer.write(hash.toString());
+                                writer.println();
+                                writer.flush();
+                            } else {
+                                System.out.println("Passwords do not match.");
+                            }
                         }
-                    } while (password == null || password.contains(" "));
+                    } while (password == null ||
+                            password.contains(" ") ||
+                            !passwordChecker ||
+                            (password.length() < 8) ||
+                            !passwordCheck.equals(password));
 
                     do {
                         System.out.println("Enter your email.");
                         email = scanner.nextLine();
+                        if (email.contains("@")) {
+                            emailSubstring = email.substring(email.indexOf("@"));
+                        }
                         if (email == null ||
                                 email.contains(" ") ||
-                                !email.contains("@")) {
+                                !email.contains("@") || !emailSubstring.contains(".")) {
                             System.out.println("Invalid email.");
                         } else {
                             writer.write(email);
@@ -135,7 +161,8 @@ public class Client {
                         }
                     } while (email == null ||
                             email.contains(" ") ||
-                            !email.contains("@"));
+                            !email.contains("@") ||
+                            !emailSubstring.contains("."));
 
                     do {
                         System.out.println("Enter your state abbreviated. (ex: Alabama = AL)");

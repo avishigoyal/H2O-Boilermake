@@ -28,6 +28,19 @@ public class Server {
             String handwash = "";
             String watercan = "";
             String sprinkle = "";
+            String yn = "";
+            String ws = "";
+            int showeri = 0;
+            int teethi = 0;
+            int toileti = 0;
+            int washHandsi = 0;
+            int clothesi = 0;
+            int cooki = 0;
+            int dishwashi = 0;
+            int handwashi = 0;
+            int watercani = 0;
+            int sprinklei = 0;
+
             do {
                 option = reader.readLine();
 
@@ -72,10 +85,8 @@ public class Server {
                     String bs = reader.readLine();
                     if (bs.equals("1")) {
                         String bath = reader.readLine();
-                        String shower = reader.readLine();
                     } else if (bs.equals("2")) {
                         String bath = reader.readLine();
-                        String shower = reader.readLine();
                         showerDur = reader.readLine();
                     }
                     teeth = reader.readLine();
@@ -85,30 +96,30 @@ public class Server {
                     cook = reader.readLine();
                     String dd = reader.readLine();
                     if (dd.equals("1")) {
-                        String dishwasher = reader.readLine();
-                        String hand = reader.readLine();
                         dishwash = reader.readLine();
                     } else if (dd.equals("2")) {
                         String dishwasher = reader.readLine();
-                        String hand = reader.readLine();
                         handwash = reader.readLine();
                     }
-                    String yn = reader.readLine();
+                    yn = reader.readLine();
                     if (yn.equals("1")) {
-                        String ws = reader.readLine();
+                        ws = reader.readLine();
                         if (ws.equals("1")) {
                             String can = reader.readLine();
-                            String sprinklers = reader.readLine();
                             watercan = reader.readLine();
                         } else if (ws.equals("2")) {
                             String can = reader.readLine();
-                            String sprinklers = reader.readLine();
                             sprinkle = reader.readLine();
                         }
                     }
                     // comparisons
+                    String comparison = Form.compareDroughtWithPlant(user, bs, showerDur, teeth, toilet, washHands,
+                            clothes, cook, dd, dishwash, handwash, yn, ws, watercan, sprinkle);
+                    writer.write(comparison);
+                    writer.println();
+                    writer.flush();
                 } else if (option.equals("2")) {
-                    //tracker
+                    // quit
                 }
             } while (!option.equals("1") && !option.equals("2") || message.contains("Invalid"));
 

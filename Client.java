@@ -266,7 +266,7 @@ public class Client {
                     } while (!toilet.equals("1") && !toilet.equals("2") && !toilet.equals("3"));
                     do {
                         System.out.println("How often do you wash your hands in a day?");
-                        System.out.println("1. 0-4 times \n 5-10 times \n3. 11+ times");
+                        System.out.println("1. 0-4 times \n2. 5-10 times \n3. 11+ times");
                         washHands = scan.nextLine();
                         if (!washHands.equals("1") && !washHands.equals("2") && !washHands.equals("3")) {
                             //error message
@@ -314,10 +314,6 @@ public class Client {
                         if (dd.equals("1")) {
                             dishwasher = true;
                             hand = false;
-                            writer.write(String.valueOf(dishwasher));
-                            writer.write(String.valueOf(hand));
-                            writer.println();
-                            writer.flush();
                             do {
                                 System.out.println("How often do you use the dishwasher in a week?");
                                 System.out.println("1. 0-4 times \n2. 5-10 times \n3. 11+ times");
@@ -419,6 +415,8 @@ public class Client {
                         }
                     } while (!yn.equals("1") && !yn.equals("2"));
                     // print info about water usage
+                    String comparison = reader.readLine();
+                    System.out.println(comparison);
                 } else if (option.equals("2")) {
                     // tracker
                 }

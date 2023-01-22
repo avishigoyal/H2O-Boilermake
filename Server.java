@@ -113,8 +113,9 @@ public class Server {
                         }
                     }
                     // comparisons
-                    String comparison = Form.compareDroughtWithPlant(user, bs, showerDur, teeth, toilet, washHands,
-                            clothes, cook, dd, dishwash, handwash, yn, ws, watercan, sprinkle);
+                    String total = Form.totalConsumption(bs, showerDur, teeth, toilet, washHands, clothes, cook, dd, dishwash, handwash,
+                            yn, ws, watercan, sprinkle);
+                    String comparison = Form.compareDroughtWithPlant(total, user);
                     writer.write(comparison);
                     writer.println();
                     writer.flush();

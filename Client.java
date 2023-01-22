@@ -32,8 +32,7 @@ public class Client {
             String option = "";
             String message = "";
 
-            // TODO: change welcome message according to name
-            System.out.println("Welcome to H20's Water Consumption Tracker!");
+            System.out.println("Welcome to WaterLog!");
             do {
                 System.out.println("Select one of the following:");
                 System.out.println("1. Login\n2. Create Account");
